@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  simpleweb:
+    image: localhost:5000/simple-web
+    container_name: simpleweb
+    expose:
+      - "80"  # exposed to internal Docker network
+
+  nginx:
+    image: nginx:latest
+    container_name: reverse-proxy
+    ports:
+      - "8081:80"  # external:internal
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - simpleweb
+
